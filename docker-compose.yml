@@ -1,0 +1,6 @@
+services:
+  landingpage:
+    image: krasosu-landingpage:latest
+    ports:
+      - "8080:80"
+    restart: unless-stopped

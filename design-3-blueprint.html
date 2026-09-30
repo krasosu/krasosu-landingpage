@@ -1,0 +1,263 @@
+<title>Krasosu Schematic</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Work+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --paper:#1c4f8f;
+    --paper-2:#1a4980;
+    --line:#dceeff;
+    --line-dim:#9fc3e8;
+    --line-faint:#5f8dbf;
+    --grid:rgba(220,238,255,0.09);
+    --accent:#ff9a4d;
+    --accent-ink:#1c2a1a;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0c1016;
+      --paper-2:#0a0d12;
+      --line:#eef3f7;
+      --line-dim:#8d99a6;
+      --line-faint:#4c5560;
+      --grid:rgba(238,243,247,0.06);
+      --accent:#ff9a4d;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0c1016;
+    --paper-2:#0a0d12;
+    --line:#eef3f7;
+    --line-dim:#8d99a6;
+    --line-faint:#4c5560;
+    --grid:rgba(238,243,247,0.06);
+    --accent:#ff9a4d;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--line);
+    font-family:'Work Sans',ui-sans-serif,system-ui,sans-serif;
+    font-size:15.5px; line-height:1.65;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:28px 28px;
+  }
+  ::selection{background:var(--accent); color:var(--accent-ink);}
+  a{color:var(--line); text-decoration:none; border-bottom:1px solid var(--line-faint);}
+  a:hover{color:var(--accent); border-color:var(--accent);}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+
+  .sheet{max-width:980px; margin:0 auto; padding:44px 24px 40px;}
+
+  .frame{border:1.5px solid var(--line-faint); padding:28px 28px 0;}
+
+  .titlebox{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding-bottom:22px; border-bottom:1px solid var(--line-faint); margin-bottom:34px;
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--line-dim);
+    text-transform:uppercase; letter-spacing:.06em;
+  }
+  .titlebox .proj{color:var(--line);}
+
+  h1{
+    font-family:'Archivo Narrow',sans-serif; font-weight:700; font-stretch:condensed;
+    font-size:clamp(34px,6.4vw,56px); line-height:1; margin:0 0 8px;
+    letter-spacing:.01em; text-transform:uppercase; text-wrap:balance;
+  }
+  .role{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--accent);
+    text-transform:uppercase; letter-spacing:.1em; margin:0 0 36px;
+  }
+
+  .bio{color:var(--line-dim); max-width:62ch; margin:0 0 40px; font-size:16px;}
+
+  /* stack diagram */
+  .diagram{margin:0 0 44px;}
+  .diagram svg{width:100%; height:auto; display:block;}
+  .diagram .lbl{font-family:'IBM Plex Mono',monospace; font-size:11px; fill:var(--line-dim); letter-spacing:.04em;}
+  .diagram .lbl-strong{fill:var(--line); font-weight:500;}
+  .diagram .box{fill:transparent; stroke:var(--line-faint); stroke-width:1;}
+  .diagram .dim{stroke:var(--line-faint); stroke-width:1;}
+  .diagram .tick{stroke:var(--accent); stroke-width:1.5;}
+
+  h2.section{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase;
+    letter-spacing:.1em; color:var(--line-dim); margin:0 0 14px;
+    padding-bottom:8px; border-bottom:1px solid var(--line-faint);
+  }
+
+  table.legend{width:100%; border-collapse:collapse; margin:0 0 40px;}
+  table.legend td{padding:11px 8px; border-bottom:1px solid var(--grid); vertical-align:top;}
+  table.legend tr:last-child td{border-bottom:none;}
+  table.legend .idx{font-family:'IBM Plex Mono',monospace; color:var(--accent); font-size:13px; width:36px;}
+  table.legend .name a{font-weight:500; font-size:15px;}
+  table.legend .desc{color:var(--line-dim); font-size:13.5px;}
+  table.legend .ref{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--line-faint); text-align:right; white-space:nowrap;}
+
+  footer{
+    display:flex; flex-wrap:wrap; gap:10px 24px; justify-content:space-between;
+    padding:18px 0 22px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--line-faint);
+  }
+  footer .legal{display:flex; gap:16px;}
+  footer .legal a{border-color:var(--line-faint);}
+  footer .legal a:hover{color:var(--accent); border-color:var(--accent);}
+
+  .theme-toggle{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; background:none; border:1px solid var(--line-faint);
+    color:var(--line-dim); padding:5px 10px; cursor:pointer;
+  }
+  .theme-toggle:hover{color:var(--accent); border-color:var(--accent);}
+
+  /* cookie consent */
+  #consent{
+    position:fixed; left:20px; right:20px; bottom:20px; z-index:20;
+    max-width:640px; margin:0 auto;
+    background:var(--paper-2); border:1.5px solid var(--accent);
+    padding:20px 22px; box-shadow:0 20px 50px rgba(0,0,0,.4);
+  }
+  #consent .hdr{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px;}
+  #consent p{margin:0 0 16px; color:var(--line-dim); font-size:14px; line-height:1.6;}
+  #consent .row{display:flex; gap:10px; flex-wrap:wrap;}
+  #consent button{
+    font-family:'Work Sans',sans-serif; font-size:14px; font-weight:500; padding:10px 18px;
+    cursor:pointer; border:1px solid var(--line-faint); background:transparent; color:var(--line);
+  }
+  #consent button.primary{background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:600;}
+  #consent button:hover{border-color:var(--accent);}
+  #consent[hidden]{display:none;}
+  #reopen{
+    position:fixed; left:20px; bottom:20px; z-index:19;
+    background:var(--paper-2); border:1px solid var(--line-faint); color:var(--line-dim);
+    font-family:'IBM Plex Mono',monospace; font-size:11px; padding:7px 11px; cursor:pointer;
+  }
+  #reopen:hover{color:var(--accent); border-color:var(--accent);}
+  #reopen[hidden]{display:none;}
+
+  @media (max-width:640px){
+    .frame{padding:20px 18px 0;}
+    table.legend .ref{display:none;}
+  }
+</style>
+
+<div class="sheet">
+  <div class="frame">
+    <div class="titlebox">
+      <span>Zeichnung <span class="proj">KRASOSU-001</span> · Maßstab n.z.M. · Rev. A</span>
+      <span id="dateStamp"></span>
+    </div>
+
+    <h1>Tobias Kraus</h1>
+    <p class="role">Full Stack Software Entwickler</p>
+
+    <p class="bio">Full Stack heißt bei mir wörtlich genommen: vom Datenmodell über die Serverlogik bis zur Oberfläche entwerfe, baue und betreibe ich selbst — auf einem eigenen vServer, in Docker-Containern, ohne fremde Plattformen dazwischen.</p>
+
+    <div class="diagram" aria-hidden="true">
+      <svg viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+        <line x1="40" y1="20" x2="40" y2="230" class="dim"/>
+        <line x1="34" y1="20" x2="46" y2="20" class="dim"/>
+        <line x1="34" y1="230" x2="46" y2="230" class="dim"/>
+        <text x="20" y="128" class="lbl" transform="rotate(-90 20 128)" text-anchor="middle">STACK</text>
+
+        <rect x="70" y="20" width="800" height="48" class="box"/>
+        <line x1="70" y1="20" x2="90" y2="20" class="tick"/>
+        <text x="96" y="38" class="lbl lbl-strong">01 · Interface</text>
+        <text x="96" y="55" class="lbl">LCARS-UI, Vanilla JS, responsives Frontend</text>
+
+        <rect x="70" y="72" width="800" height="48" class="box"/>
+        <line x1="70" y1="72" x2="90" y2="72" class="tick"/>
+        <text x="96" y="90" class="lbl lbl-strong">02 · Anwendung</text>
+        <text x="96" y="107" class="lbl">Node.js / Express, Session- &amp; API-Logik</text>
+
+        <rect x="70" y="124" width="800" height="48" class="box"/>
+        <line x1="70" y1="124" x2="90" y2="124" class="tick"/>
+        <text x="96" y="142" class="lbl lbl-strong">03 · Betrieb</text>
+        <text x="96" y="159" class="lbl">Docker-Container auf eigenem vServer</text>
+
+        <rect x="70" y="176" width="800" height="48" class="box"/>
+        <line x1="70" y1="176" x2="90" y2="176" class="tick"/>
+        <text x="96" y="194" class="lbl lbl-strong">04 · Zugriff</text>
+        <text x="96" y="211" class="lbl">krasosu.de — eigene Domain, eigene Infrastruktur</text>
+      </svg>
+    </div>
+
+    <h2 class="section">Legende — Projekte &amp; Verweise</h2>
+    <table class="legend">
+      <tr>
+        <td class="idx">01</td>
+        <td class="name"><a href="http://krasosu.de:3001/" target="_blank" rel="noopener">LCARS</a></td>
+        <td class="desc">Hobbyprojekt · Chat-Oberfläche im Star-Trek-Terminal-Stil</td>
+        <td class="ref">krasosu.de:3001</td>
+      </tr>
+      <tr>
+        <td class="idx">02</td>
+        <td class="name"><a href="https://cloud.krasosu.de" target="_blank" rel="noopener">ownCloud</a></td>
+        <td class="desc">Selbst gehostete Cloud für eigene Daten</td>
+        <td class="ref">cloud.krasosu.de</td>
+      </tr>
+      <tr>
+        <td class="idx">03</td>
+        <td class="name"><a href="https://github.com/tobiaskraus" target="_blank" rel="noopener">GitHub</a></td>
+        <td class="desc">Quellcode und weitere Projekte</td>
+        <td class="ref">github.com ↗</td>
+      </tr>
+    </table>
+
+    <footer>
+      <span>Gezeichnet von T. Kraus · 2026</span>
+      <span class="legal"><a href="#impressum">Impressum</a><a href="#datenschutz">Datenschutz</a></span>
+      <button class="theme-toggle" id="themeToggle" type="button">Ansicht wechseln</button>
+    </footer>
+  </div>
+</div>
+
+<div id="consent" role="dialog" aria-live="polite" aria-label="Cookie-Hinweis" hidden>
+  <div class="hdr">Hinweis — Cookies</div>
+  <p>Diese Seite verwendet ausschließlich technisch notwendige Cookies. Es findet kein Tracking statt. Deine Auswahl wird nur lokal in deinem Browser gespeichert.</p>
+  <div class="row">
+    <button class="primary" id="accept">Akzeptieren</button>
+    <button id="decline">Ablehnen</button>
+  </div>
+</div>
+<button id="reopen" hidden>Cookie-Einstellungen</button>
+
+<script>
+(function(){
+  var d=new Date();
+  var months=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  document.getElementById('dateStamp').textContent = d.getDate()+'. '+months[d.getMonth()]+' '+d.getFullYear();
+
+  var KEY='krasosu-cookie-consent';
+  var banner=document.getElementById('consent');
+  var reopen=document.getElementById('reopen');
+  function show(){banner.hidden=false; reopen.hidden=true;}
+  function hide(choice){
+    try{localStorage.setItem(KEY, JSON.stringify({choice:choice, ts:Date.now()}));}catch(e){}
+    banner.hidden=true; reopen.hidden=false;
+  }
+  var saved=null;
+  try{saved=JSON.parse(localStorage.getItem(KEY));}catch(e){}
+  if(saved && saved.choice){ reopen.hidden=false; } else { show(); }
+  document.getElementById('accept').addEventListener('click', function(){hide('accepted');});
+  document.getElementById('decline').addEventListener('click', function(){hide('declined');});
+  reopen.addEventListener('click', show);
+
+  var TKEY='krasosu-theme';
+  var root=document.documentElement;
+  var toggle=document.getElementById('themeToggle');
+  function apply(t){ if(t){root.setAttribute('data-theme',t);} else {root.removeAttribute('data-theme');} }
+  var savedTheme=null;
+  try{savedTheme=localStorage.getItem(TKEY);}catch(e){}
+  apply(savedTheme);
+  toggle.addEventListener('click', function(){
+    var current=root.getAttribute('data-theme');
+    var prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var next;
+    if(!current){ next = prefersDark ? 'light' : 'dark'; }
+    else if(current==='dark'){ next='light'; }
+    else{ next='dark'; }
+    apply(next);
+    try{localStorage.setItem(TKEY,next);}catch(e){}
+  });
+})();
+</script>
