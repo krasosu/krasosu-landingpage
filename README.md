@@ -16,22 +16,33 @@ npx serve public
 
 ## Lokal starten (mit Docker)
 
+`docker-compose.yml` ist auf den produktiven Traefik-Betrieb ausgelegt (siehe
+unten) und veröffentlicht daher **keinen** Host-Port mehr. Für einen
+schnellen lokalen Check reicht ein direkter `docker run`, ganz ohne Compose:
+
 ```bash
 docker build -t krasosu-landingpage:latest .
-docker compose up -d
+docker run --rm -p 8080:80 krasosu-landingpage:latest
 ```
 
 Danach im Browser: http://localhost:8080
 
 ## Deployment auf dem vServer
 
-1. Projektverzeichnis auf den vServer kopieren (z.B. `scp` oder `git`).
-2. `docker build -t krasosu-landingpage:latest .` auf dem Server ausführen.
-3. `docker compose up -d` auf dem Server ausführen.
-4. Reverse Proxy (nginx/Caddy/Traefik) mit TLS davorschalten und auf
-   Port 8080 dieses Containers zeigen lassen, damit `https://krasosu.de`
-   direkt auf die Landingpage geht (ohne Port in der URL). Das LCARS-Projekt
-   bleibt wie bisher separat unter `krasosu.de:3001` erreichbar.
+Die Seite läuft produktiv hinter dem zentralen Traefik-Reverse-Proxy aus
+[`../deployment`](../deployment) — Details, Labels und die Anbindung der
+anderen Container (LCARS, ownCloud, docker-image-downloader) stehen in
+dessen README. Kurzfassung für dieses Projekt:
+
+1. Einmalig (falls noch nicht geschehen): `docker network create proxy`
+   und den Traefik-Stack aus `../deployment` starten.
+2. Projektverzeichnis auf den vServer kopieren (z.B. `scp` oder `git`).
+3. `docker build -t krasosu-landingpage:latest .` auf dem Server ausführen.
+4. `docker compose up -d` auf dem Server ausführen — das Compose-File hängt
+   den Container an das externe Netzwerk `proxy` und trägt Traefik-Labels
+   für `krasosu.de` / `www.krasosu.de`, TLS inklusive.
+5. LCARS bleibt wie bisher separat unter `krasosu.de:3001` erreichbar
+   (eigener Traefik-Entrypoint, siehe `../deployment/README.md`).
 
 ## Vor dem Go-Live: offene Pflichtangaben
 

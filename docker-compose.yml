@@ -1,6 +1,16 @@
 services:
   landingpage:
     image: krasosu-landingpage:latest
-    ports:
-      - "8080:80"
     restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.landingpage.rule=Host(`krasosu.de`) || Host(`www.krasosu.de`)"
+      - "traefik.http.routers.landingpage.entrypoints=websecure"
+      - "traefik.http.routers.landingpage.tls.certresolver=letsencrypt"
+      - "traefik.http.services.landingpage.loadbalancer.server.port=80"
+
+networks:
+  proxy:
+    external: true
