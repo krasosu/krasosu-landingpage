@@ -1,0 +1,236 @@
+<title>krasosu — neofetch</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+  :root{
+    --ground:#14171a;
+    --surface:#1b1f22;
+    --surface-2:#20252a;
+    --rule:#31383d;
+    --rule-soft:#262b2f;
+    --text:#e6e8e6;
+    --text-dim:#a2a8a4;
+    --text-faint:#6b716d;
+    --accent:#c9e26b;
+    --accent-ink:#1a2005;
+    --accent-2:#ff9466;
+    --info:#6ec6ff;
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--ground);}
+  body{
+    margin:0; min-height:100vh; background:var(--ground); color:var(--text);
+    font-family:'Manrope',ui-sans-serif,system-ui,sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent); color:var(--accent-ink);}
+  a{color:inherit; text-decoration:none;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+  .mono{font-family:'Fira Code',ui-monospace,Menlo,Consolas,monospace;}
+
+  .page{max-width:880px; margin:0 auto; padding:64px 24px 60px;}
+
+  /* header: neofetch-style badge + stat table */
+  .fetch{display:grid; grid-template-columns:auto 1fr; gap:36px; align-items:center; margin-bottom:28px;}
+  @media (max-width:560px){ .fetch{grid-template-columns:1fr; justify-items:center; text-align:center;} }
+
+  .badge{
+    width:104px; height:104px; border-radius:50%;
+    border:2px solid var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:40px; color:var(--accent);
+    box-shadow:0 0 0 1px var(--rule), 0 0 40px rgba(201,226,107,.15);
+    flex-shrink:0;
+  }
+
+  .stats{font-family:'Fira Code',monospace; font-size:14px;}
+  .stats .brand{font-family:'Manrope',sans-serif; font-weight:800; font-size:26px; color:var(--text); margin:0 0 10px; letter-spacing:-.01em;}
+  .stats .row{display:flex; gap:10px; padding:2px 0;}
+  .stats .k{color:var(--accent); min-width:62px;}
+  .stats .v{color:var(--text-dim);}
+  .stats .v strong{color:var(--text); font-weight:500;}
+
+  .swatches{display:flex; gap:5px; margin-top:12px;}
+  .swatches span{width:16px; height:16px; border-radius:3px; display:block;}
+
+  hr.rule{border:none; border-top:1px solid var(--rule); margin:30px 0 26px;}
+
+  .group{margin-bottom:26px;}
+  .group:last-child{margin-bottom:0;}
+  .group-head{
+    display:flex; align-items:center; gap:10px; margin-bottom:12px;
+  }
+  .group-head .tag{
+    font-family:'Fira Code',monospace; font-size:11.5px; text-transform:lowercase;
+    color:var(--text-faint); letter-spacing:.02em;
+  }
+  .group-head::after{content:''; flex:1; height:1px; background:var(--rule);}
+
+  .proc{
+    display:flex; align-items:center; gap:14px;
+    padding:13px 14px; border-radius:9px;
+    border:1px solid transparent;
+    transition:background .15s ease, border-color .15s ease, transform .15s ease;
+  }
+  .proc + .proc{margin-top:4px;}
+  a.proc:hover, a.proc:focus-visible{
+    background:var(--surface); border-color:var(--rule); transform:translateX(3px); outline:none;
+  }
+  .proc .dot{width:7px; height:7px; border-radius:50%; background:var(--accent); flex-shrink:0; box-shadow:0 0 8px rgba(201,226,107,.6);}
+  .proc.alt .dot{background:var(--accent-2); box-shadow:0 0 8px rgba(255,148,102,.6);}
+  .proc .body{flex:1; min-width:0;}
+  .proc .name{display:flex; align-items:baseline; gap:10px; font-weight:700; font-size:15.5px; color:var(--text);}
+  .proc .tail{font-family:'Fira Code',monospace; font-size:11.5px; color:var(--text-faint); font-weight:400;}
+  .proc .desc{color:var(--text-dim); font-size:13px; margin-top:2px;}
+  .bars{display:flex; align-items:flex-end; gap:2px; height:14px; flex-shrink:0;}
+  .bars span{width:3px; background:var(--rule-soft); border-radius:1px;}
+  .bars span:nth-child(1){height:40%;}
+  .bars span:nth-child(2){height:70%;}
+  .bars span:nth-child(3){height:100%;}
+  .bars span:nth-child(4){height:55%;}
+  a.proc:hover .bars span{background:var(--accent);}
+  a.proc.alt:hover .bars span{background:var(--accent-2);}
+
+  footer{
+    margin-top:40px; padding-top:20px; border-top:1px solid var(--rule);
+    display:flex; flex-wrap:wrap; gap:8px 22px; justify-content:space-between;
+    font-family:'Fira Code',monospace; font-size:11.5px; color:var(--text-faint);
+  }
+  footer .legal{display:flex; gap:16px;}
+  footer .legal a{color:var(--text-faint); border-bottom:1px solid var(--rule);}
+  footer .legal a:hover{color:var(--accent);}
+
+  /* cookie consent */
+  #consent{
+    position:fixed; left:16px; right:16px; bottom:16px; z-index:20;
+    max-width:600px; margin:0 auto;
+    background:var(--surface); border:1px solid var(--rule); border-radius:12px;
+    padding:18px 20px; box-shadow:0 20px 50px rgba(0,0,0,.5);
+  }
+  #consent .hdr{font-family:'Fira Code',monospace; color:var(--accent); font-size:12px; margin-bottom:8px;}
+  #consent p{margin:0 0 14px; color:var(--text-dim); font-size:13.5px; line-height:1.6;}
+  #consent .row2{display:flex; gap:10px; flex-wrap:wrap;}
+  #consent button{
+    font-family:'Manrope',sans-serif; font-weight:700; font-size:13px; padding:9px 16px;
+    cursor:pointer; border-radius:7px; border:1px solid var(--rule); background:var(--surface-2); color:var(--text);
+    transition:border-color .15s ease;
+  }
+  #consent button.primary{background:var(--accent); border-color:var(--accent); color:var(--accent-ink);}
+  #consent button:hover{border-color:var(--accent);}
+  #consent[hidden]{display:none;}
+  #reopen{
+    position:fixed; left:16px; bottom:16px; z-index:19;
+    background:var(--surface); border:1px solid var(--rule); color:var(--text-faint); border-radius:8px;
+    font-family:'Fira Code',monospace; font-size:11px; padding:6px 10px; cursor:pointer;
+  }
+  #reopen:hover{color:var(--accent); border-color:var(--accent);}
+  #reopen[hidden]{display:none;}
+</style>
+
+<div class="page">
+
+  <div class="fetch">
+    <div class="badge">K</div>
+    <div class="stats">
+      <p class="brand">krasosu@server</p>
+      <div class="row"><span class="k">os</span><span class="v">krasosu.de</span></div>
+      <div class="row"><span class="k">host</span><span class="v">self-managed vServer</span></div>
+      <div class="row"><span class="k">stack</span><span class="v">Docker + nginx</span></div>
+      <div class="row"><span class="k">links</span><span class="v"><strong id="linkCount">4</strong> active</span></div>
+      <div class="swatches" aria-hidden="true">
+        <span style="background:var(--ground)"></span>
+        <span style="background:var(--surface-2)"></span>
+        <span style="background:var(--rule)"></span>
+        <span style="background:var(--text-dim)"></span>
+        <span style="background:var(--accent)"></span>
+        <span style="background:var(--accent-2)"></span>
+        <span style="background:var(--info)"></span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="group">
+    <div class="group-head"><span class="tag">hobby-projects</span></div>
+    <a class="proc" href="http://krasosu.de:3001/" target="_blank" rel="noopener">
+      <span class="dot"></span>
+      <span class="body">
+        <span class="name">LCARS <span class="tail">:3001</span></span>
+        <span class="desc">LCARS-style chat interface, self-hosted</span>
+      </span>
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+    </a>
+    <a class="proc alt" href="https://docker-image-downloader.de" target="_blank" rel="noopener">
+      <span class="dot"></span>
+      <span class="body">
+        <span class="name">docker-image-downloader</span>
+        <span class="desc">Pull Docker images without a local Docker daemon</span>
+      </span>
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+    </a>
+  </div>
+
+  <div class="group">
+    <div class="group-head"><span class="tag">infrastructure</span></div>
+    <a class="proc" href="https://cloud.krasosu.de" target="_blank" rel="noopener">
+      <span class="dot"></span>
+      <span class="body">
+        <span class="name">Cloud</span>
+        <span class="desc">Self-hosted cloud storage</span>
+      </span>
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+    </a>
+  </div>
+
+  <div class="group">
+    <div class="group-head"><span class="tag">further-links</span></div>
+    <a class="proc alt" href="https://github.com/krasosu" target="_blank" rel="noopener">
+      <span class="dot"></span>
+      <span class="body">
+        <span class="name">GitHub</span>
+        <span class="desc">github.com/krasosu — source code &amp; repositories</span>
+      </span>
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+    </a>
+  </div>
+
+  <footer>
+    <span>krasosu.de — © 2026</span>
+    <span class="legal"><a href="#imprint">Imprint</a><a href="#privacy">Privacy Policy</a></span>
+  </footer>
+</div>
+
+<div id="consent" role="dialog" aria-live="polite" aria-label="Cookie notice" hidden>
+  <div class="hdr">$ cookie --consent</div>
+  <p>This site uses only strictly necessary cookies. No tracking takes place. Your choice is stored locally in your browser only.</p>
+  <div class="row2">
+    <button class="primary" id="accept">Accept</button>
+    <button id="decline">Decline</button>
+  </div>
+</div>
+<button id="reopen" hidden>Cookie settings</button>
+
+<script>
+(function(){
+  var count = document.querySelectorAll('.proc').length;
+  var el = document.getElementById('linkCount');
+  if(el){ el.textContent = count; }
+})();
+(function(){
+  var KEY='krasosu-cookie-consent';
+  var banner=document.getElementById('consent');
+  var reopen=document.getElementById('reopen');
+  function show(){banner.hidden=false; reopen.hidden=true;}
+  function hide(choice){
+    try{localStorage.setItem(KEY, JSON.stringify({choice:choice, ts:Date.now()}));}catch(e){}
+    banner.hidden=true; reopen.hidden=false;
+  }
+  var saved=null;
+  try{saved=JSON.parse(localStorage.getItem(KEY));}catch(e){}
+  if(saved && saved.choice){ reopen.hidden=false; } else { show(); }
+  document.getElementById('accept').addEventListener('click', function(){hide('accepted');});
+  document.getElementById('decline').addEventListener('click', function(){hide('declined');});
+  reopen.addEventListener('click', show);
+})();
+</script>
