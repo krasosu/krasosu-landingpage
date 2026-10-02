@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>krasosu</title>
-<meta name="description" content="krasosu.de — self-hosted projects and links.">
+<meta name="description" content="krasosu.de — software projects and links.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -26,7 +26,6 @@
     --accent:#4fd197;
     --accent-dim:#2f9e6e;
     --accent-2:#ff6b55;
-    --status:#4fd197;
     font-synthesis:none;
   }
   *{box-sizing:border-box;}
@@ -72,68 +71,22 @@
     overflow:hidden;
   }
 
-  .bar{
-    display:flex; align-items:center; justify-content:space-between;
+  .topbar{
+    display:flex; align-items:center; gap:10px;
     padding:14px 20px;
-    background:linear-gradient(180deg, rgba(255,255,255,.025), transparent);
     border-bottom:1px solid var(--rule);
-    color:var(--text-faint);
-    font-size:12px;
+    color:var(--text-dim);
+    font-size:12.5px;
     letter-spacing:.04em;
   }
-  .bar .whoami{display:flex; align-items:center; gap:9px;}
-  .bar .dots{display:flex; gap:6px;}
-  .bar .dots span{width:9px;height:9px;border-radius:50%;background:var(--rule-soft);}
-  .bar .dots span:nth-child(1){background:#2b3545;}
-  .bar .dots span:nth-child(2){background:#243040;}
-  .bar .dots span:nth-child(3){background:var(--accent-dim);}
+  .topbar .mark svg{display:block;width:18px;height:18px;}
 
-  .shell{padding:34px 28px 30px;}
+  .hero{padding:48px 32px 6px;text-align:center;}
+  .hero .logo{margin:0 auto;filter:drop-shadow(0 0 34px rgba(79,209,151,.18));}
+  .hero .logo svg{display:block;width:clamp(180px,32vw,220px);height:auto;margin:0 auto;}
 
-  .line{margin:0 0 4px; min-height:1.7em;}
-  .prompt{color:var(--text-faint);}
-  .cmd{color:var(--text);}
-  .typecursor{display:inline-block;width:7px;height:1em;background:var(--accent);vertical-align:-1px;margin-left:1px;opacity:1;transition:opacity .25s ease;}
-  .typecursor.done{opacity:0;}
-
-  .step{margin-bottom:36px;}
-  .step:last-of-type{margin-bottom:0;}
-  .step .out-block{
-    opacity:1; transform:translateY(0);
-    transition:opacity .45s ease, transform .45s ease;
-  }
-  .step .out-block.pending{opacity:0; transform:translateY(5px);}
-
-  h1.title{
-    font-size:clamp(34px,7vw,52px);
-    line-height:1;
-    margin:0;
-    color:var(--text);
-    font-weight:700;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-    text-wrap:balance;
-    text-shadow:0 0 34px rgba(79,209,151,.22);
-  }
-  .logo{margin:0; filter:drop-shadow(0 0 34px rgba(79,209,151,.18));}
-  .logo svg{display:block; width:clamp(180px,32vw,240px); height:auto;}
-  .meta{display:flex; align-items:center; flex-wrap:wrap; gap:16px; margin-top:8px;}
-  .domain{color:var(--accent-2); font-size:13px; letter-spacing:.05em;}
-  .status{display:inline-flex; align-items:center; gap:7px; color:var(--text-faint); font-size:12.5px;}
-  .status .dot{
-    width:6px;height:6px;border-radius:50%;background:var(--status);
-    box-shadow:0 0 0 3px rgba(79,209,151,.18), 0 0 10px rgba(79,209,151,.5);
-  }
-
-  .group{margin-bottom:22px;}
-  .group:last-child{margin-bottom:0;}
-  .group-label{
-    display:flex; align-items:center; gap:8px;
-    color:var(--text-faint); font-size:12.5px; letter-spacing:.03em;
-    margin-bottom:10px;
-  }
-  .group-label .branch{color:var(--rule); }
-  .group-label .name{color:var(--text-dim);}
+  .section{padding:6px 32px 8px;}
+  .section-label{color:var(--text-faint);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin:22px 0 12px;}
 
   .cards{display:flex; flex-wrap:wrap; gap:12px;}
   .card{
@@ -160,14 +113,21 @@
   .card:hover .name .go{color:var(--accent); transform:translateX(2px);}
   .card .desc{color:var(--text-dim); font-size:12.5px; line-height:1.55; margin:0;}
 
+  .elsewhere{
+    margin:8px 0 0; padding:18px 32px 26px;
+    border-top:1px solid var(--rule-soft);
+    font-size:12.5px; color:var(--text-faint);
+  }
+  .elsewhere .sep{margin:0 8px; color:var(--rule);}
+  .elsewhere a{color:var(--text-dim); border-bottom:1px solid var(--rule);}
+  .elsewhere a:hover{color:var(--accent); border-color:rgba(79,209,151,.5);}
+
   footer{
     max-width:840px; margin:28px auto 0;
     padding:0 28px;
     display:flex; flex-wrap:wrap; gap:6px 20px; justify-content:space-between;
     color:var(--text-faint); font-size:12px;
-    opacity:1; transition:opacity .5s ease;
   }
-  footer.pending{opacity:0;}
   footer .legal a{color:var(--text-faint); border-bottom:1px solid var(--rule);}
   footer .legal a:hover{color:var(--accent);}
   footer .legal{display:flex; gap:16px;}
@@ -200,11 +160,6 @@
   }
   #reopen:hover{color:var(--accent); border-color:var(--accent);}
   #reopen[hidden]{display:none;}
-
-  @media (prefers-reduced-motion:reduce){
-    .step .out-block{transition:none;}
-    footer{transition:none;}
-  }
 </style>
 </head>
 <body>
@@ -213,87 +168,57 @@
 
 <div class="page">
   <div class="window">
-    <div class="bar">
-      <span class="whoami">root@krasosu<span style="color:var(--text-faint)">:</span>~</span>
-      <span class="dots"><span></span><span></span><span></span></span>
+    <div class="topbar">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#1d2b3a"/><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="#4fd197" stroke-width="2.4" d="M9 7 C6 7 6.5 10.5 6.5 13 C6.5 15 5.5 16 4 16 C5.5 16 6.5 17 6.5 19 C6.5 21.5 6 25 9 25 M23 7 C26 7 25.5 10.5 25.5 13 C25.5 15 26.5 16 28 16 C26.5 16 25.5 17 25.5 19 C25.5 21.5 26 25 23 25"/><path stroke="#eef2f6" stroke-width="3" d="M12.5 8.5 V23.5 M19.5 13 L13 19 M15.5 17 L20 23.5"/></g></svg>
+      </span>
+      <span class="domain">krasosu.de</span>
     </div>
 
-    <main class="shell">
-      <div class="step" data-cmd="hostname">
-        <p class="line"><span class="prompt">$</span> <span class="cmd typed"></span><span class="typecursor"></span></p>
-        <div class="out-block">
-          <p class="logo" role="img" aria-label="krasosu — Kraus Software Solutions. It's not a bug, it's a feature.">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 156">
-              <style>
-                .logo-ink{fill:#eef2f6;}
-                .logo-muted{fill:#93a4b6;}
-                .logo-fix{stroke:#ff6b55; fill:none; stroke-linecap:round; stroke-linejoin:round;}
-                .logo-mono{font-family:'JetBrains Mono','Fira Code',ui-monospace,Menlo,Consolas,monospace;}
-                .logo-word{font-weight:700; font-size:52px; text-anchor:middle;}
-              </style>
-              <g transform="translate(-4 0)">
-                <g class="logo-mono logo-word">
-                  <text class="logo-ink" x="58" y="88">k</text><text class="logo-ink" x="90" y="88">r</text><text class="logo-ink" x="122" y="88">a</text><text class="logo-ink" x="154" y="88">s</text><text class="logo-ink" x="186" y="88">o</text><text class="logo-ink" x="218" y="88">s</text><text class="logo-ink" x="250" y="88" opacity="0.35">u</text>
-                </g>
-                <path class="logo-fix" d="M233 78 L267 64" stroke-width="4.5"/>
-                <path class="logo-fix" d="M259 19 C255 12 244 12 241 21 C238 31 244 39 252 38 C260 37 263 28 260 19 C258 14 254 12 250 13" stroke-width="4.5"/>
-              </g>
-              <text class="logo-mono logo-ink" x="150" y="122" font-size="15" text-anchor="middle"><tspan font-weight="700">Kra</tspan><tspan class="logo-muted">us </tspan><tspan font-weight="700">So</tspan><tspan class="logo-muted">ftware </tspan><tspan font-weight="700">So</tspan><tspan class="logo-muted">lutions</tspan></text>
-              <text class="logo-mono logo-muted" x="150" y="146" font-size="13" text-anchor="middle">// it's not a bug, it's a feature.</text>
-            </svg>
-          </p>
-          <div class="meta">
-            <span class="domain">krasosu.de</span>
-            <span class="status"><span class="dot"></span>online</span>
-          </div>
-        </div>
+    <div class="hero">
+      <p class="logo" role="img" aria-label="krasosu — Kraus Software Solutions. It's not a bug, it's a feature.">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 156">
+          <style>
+            .logo-ink{fill:#eef2f6;}
+            .logo-muted{fill:#93a4b6;}
+            .logo-fix{stroke:#ff6b55; fill:none; stroke-linecap:round; stroke-linejoin:round;}
+            .logo-mono{font-family:'JetBrains Mono','Fira Code',ui-monospace,Menlo,Consolas,monospace;}
+            .logo-word{font-weight:700; font-size:52px; text-anchor:middle;}
+          </style>
+          <g transform="translate(-4 0)">
+            <g class="logo-mono logo-word">
+              <text class="logo-ink" x="58" y="88">k</text><text class="logo-ink" x="90" y="88">r</text><text class="logo-ink" x="122" y="88">a</text><text class="logo-ink" x="154" y="88">s</text><text class="logo-ink" x="186" y="88">o</text><text class="logo-ink" x="218" y="88">s</text><text class="logo-ink" x="250" y="88" opacity="0.35">u</text>
+            </g>
+            <path class="logo-fix" d="M233 78 L267 64" stroke-width="4.5"/>
+            <path class="logo-fix" d="M259 19 C255 12 244 12 241 21 C238 31 244 39 252 38 C260 37 263 28 260 19 C258 14 254 12 250 13" stroke-width="4.5"/>
+          </g>
+          <text class="logo-mono logo-ink" x="150" y="122" font-size="15" text-anchor="middle"><tspan font-weight="700">Kra</tspan><tspan class="logo-muted">us </tspan><tspan font-weight="700">So</tspan><tspan class="logo-muted">ftware </tspan><tspan font-weight="700">So</tspan><tspan class="logo-muted">lutions</tspan></text>
+          <text class="logo-mono logo-muted" x="150" y="146" font-size="13" text-anchor="middle">// it's not a bug, it's a feature.</text>
+        </svg>
+      </p>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Projects</div>
+      <div class="cards">
+        <a class="card" href="http://krasosu.de:3001/" target="_blank" rel="noopener">
+          <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7.5 9.5l3 2.7-3 2.7M13 15h4"/></svg></span>
+          <span class="name">LCARS <span class="go">:3001 →</span></span>
+          <p class="desc">LCARS-style chat interface</p>
+        </a>
+        <a class="card" href="https://docker-image-downloader.de" target="_blank" rel="noopener">
+          <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10M8 9l4 4 4-4"/><path d="M4 14v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/></svg></span>
+          <span class="name">docker-image-downloader <span class="go">↗</span></span>
+          <p class="desc">Pull Docker images without a local Docker daemon</p>
+        </a>
       </div>
+    </div>
 
-      <div class="step" data-cmd="tree ./links">
-        <p class="line"><span class="prompt">$</span> <span class="cmd typed"></span><span class="typecursor"></span></p>
-        <div class="out-block">
-
-          <div class="group">
-            <div class="group-label"><span class="branch">├──</span> <span class="name">hobby-projects/</span></div>
-            <div class="cards">
-              <a class="card" href="http://krasosu.de:3001/" target="_blank" rel="noopener">
-                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7.5 9.5l3 2.7-3 2.7M13 15h4"/></svg></span>
-                <span class="name">LCARS <span class="go">:3001 →</span></span>
-                <p class="desc">LCARS-style chat interface, self-hosted</p>
-              </a>
-              <a class="card" href="https://docker-image-downloader.de" target="_blank" rel="noopener">
-                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10M8 9l4 4 4-4"/><path d="M4 14v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/></svg></span>
-                <span class="name">docker-image-downloader <span class="go">↗</span></span>
-                <p class="desc">Pull Docker images without a local Docker daemon</p>
-              </a>
-            </div>
-          </div>
-
-          <div class="group">
-            <div class="group-label"><span class="branch">├──</span> <span class="name">infrastructure/</span></div>
-            <div class="cards">
-              <a class="card" href="https://cloud.krasosu.de" target="_blank" rel="noopener">
-                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10.5a3.5 3.5 0 0 0 .5-6.96A5.5 5.5 0 0 0 7.3 9.02 4 4 0 0 0 7 18z"/></svg></span>
-                <span class="name">Cloud <span class="go">↗</span></span>
-                <p class="desc">Self-hosted cloud storage</p>
-              </a>
-            </div>
-          </div>
-
-          <div class="group">
-            <div class="group-label"><span class="branch">└──</span> <span class="name">further-links/</span></div>
-            <div class="cards">
-              <a class="card" href="https://github.com/krasosu" target="_blank" rel="noopener">
-                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="7" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M7.8 8.6L11 16M16.2 8.6L13 16M8.2 7h7.6"/></svg></span>
-                <span class="name">GitHub <span class="go">↗</span></span>
-                <p class="desc">github.com/krasosu — source code &amp; repositories</p>
-              </a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </main>
+    <p class="elsewhere">
+      Elsewhere
+      <span class="sep">·</span><a href="https://cloud.krasosu.de" target="_blank" rel="noopener">Cloud</a>
+      <span class="sep">·</span><a href="https://github.com/krasosu" target="_blank" rel="noopener">GitHub</a>
+    </p>
   </div>
 
   <footer>
@@ -328,50 +253,6 @@
   document.getElementById('accept').addEventListener('click', function(){hide('accepted');});
   document.getElementById('decline').addEventListener('click', function(){hide('declined');});
   reopen.addEventListener('click', show);
-})();
-
-(function(){
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var footer = document.querySelector('footer');
-  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
-
-  if(reduceMotion){ return; }
-
-  steps.forEach(function(s){
-    s.querySelector('.out-block').classList.add('pending');
-  });
-  if(footer){ footer.classList.add('pending'); }
-
-  function typeInto(el, text, cb){
-    var i=0;
-    (function tick(){
-      if(i<=text.length){
-        el.textContent = text.slice(0,i);
-        i++;
-        setTimeout(tick, 26 + Math.random()*22);
-      } else { cb(); }
-    })();
-  }
-
-  function runStep(idx){
-    if(idx>=steps.length){
-      if(footer){ requestAnimationFrame(function(){ footer.classList.remove('pending'); }); }
-      return;
-    }
-    var step = steps[idx];
-    var cmdText = step.getAttribute('data-cmd');
-    var typedEl = step.querySelector('.typed');
-    var cursorEl = step.querySelector('.typecursor');
-    var outBlock = step.querySelector('.out-block');
-    typeInto(typedEl, cmdText, function(){
-      cursorEl.classList.add('done');
-      setTimeout(function(){
-        requestAnimationFrame(function(){ outBlock.classList.remove('pending'); });
-        setTimeout(function(){ runStep(idx+1); }, 260);
-      }, 120);
-    });
-  }
-  runStep(0);
 })();
 </script>
 </body>
