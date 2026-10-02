@@ -7,8 +7,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.landingpage.rule=Host(`krasosu.de`) || Host(`www.krasosu.de`)"
-      - "traefik.http.routers.landingpage.entrypoints=websecure"
-      - "traefik.http.routers.landingpage.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.landingpage.entrypoints=https"
+      - "traefik.http.routers.landingpage.tls.certresolver=http"
+      - "traefik.http.routers.landingpage.middlewares=default@file"
       - "traefik.http.services.landingpage.loadbalancer.server.port=80"
 
 networks:
