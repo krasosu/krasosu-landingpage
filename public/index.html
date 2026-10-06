@@ -11,7 +11,9 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#0a0e15">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+  @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/jetbrains-mono-400.woff2') format('woff2');}
+  @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/jetbrains-mono-500.woff2') format('woff2');}
+  @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/jetbrains-mono-700.woff2') format('woff2');}
 
   :root{
     --canvas:#0a0e15;
@@ -61,7 +63,7 @@
     mask-image:radial-gradient(ellipse 70% 60% at 50% 30%, black, transparent);
   }
 
-  .page{position:relative;z-index:1;max-width:840px;margin:0 auto;padding:56px 20px 64px;}
+  .page{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:56px 20px 64px;}
 
   .window{
     background:var(--surface);
@@ -96,7 +98,7 @@
     border:1px solid var(--rule);
     border-radius:10px;
     padding:16px 16px 15px;
-    flex:1 1 220px; max-width:270px;
+    flex:1 1 220px; max-width:290px;
     transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
   }
   .card:hover, .card:focus-visible{
@@ -108,7 +110,7 @@
   }
   .card .icon{color:var(--accent); margin-bottom:10px; display:block;}
   .card .icon svg{display:block;width:20px;height:20px;}
-  .card .name{display:flex; align-items:center; justify-content:space-between; font-weight:500; font-size:14.5px; color:var(--text); margin-bottom:5px;}
+  .card .name{display:flex; align-items:center; justify-content:space-between; gap:8px; white-space:nowrap; font-weight:500; font-size:14.5px; color:var(--text); margin-bottom:5px;}
   .card .name .go{color:var(--text-faint); font-size:12px; transition:transform .18s ease, color .18s ease;}
   .card:hover .name .go{color:var(--accent); transform:translateX(2px);}
   .card .desc{color:var(--text-dim); font-size:12.5px; line-height:1.55; margin:0;}
@@ -123,7 +125,7 @@
   .elsewhere a:hover{color:var(--accent); border-color:rgba(79,209,151,.5);}
 
   footer{
-    max-width:840px; margin:28px auto 0;
+    max-width:900px; margin:28px auto 0;
     padding:0 28px;
     display:flex; flex-wrap:wrap; gap:6px 20px; justify-content:space-between;
     color:var(--text-faint); font-size:12px;
@@ -209,7 +211,7 @@
         <a class="card" href="https://docker-image-downloader.de" target="_blank" rel="noopener">
           <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10M8 9l4 4 4-4"/><path d="M4 14v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/></svg></span>
           <span class="name">docker-image-downloader <span class="go">↗</span></span>
-          <p class="desc">Pull Docker images without a local Docker daemon</p>
+          <p class="desc">Docker images as an archive for offline use</p>
         </a>
         <a class="card" href="https://depdow.krasosu.de/" target="_blank" rel="noopener">
           <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg></span>
